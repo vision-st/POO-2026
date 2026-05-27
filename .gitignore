@@ -1,0 +1,52 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+/nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Maven
+target/
+log/
+logs/
+
+# Gradle
+.gradle/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Env / secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
