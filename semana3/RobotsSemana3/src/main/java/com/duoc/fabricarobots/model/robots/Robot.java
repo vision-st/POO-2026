@@ -1,39 +1,33 @@
 package com.duoc.fabricarobots.model.robots;
 
-
 import com.duoc.fabricarobots.model.armamentobelico.Armamento;
 import com.duoc.fabricarobots.model.mecanismo.Motor;
+import com.duoc.fabricarobots.model.personas.Piloto;
 import com.duoc.fabricarobots.model.robots.acciones.Atacar;
 
 /**
- * Representa un robot de combate dentro del sistema
+ * Representa un robot de combate dentro del sistema.
  *
- * ... coloquen una descripción impresionante.
+ * En semana 3 se incorpora un piloto como nueva relación entre clases.
  */
 public class Robot {
 
-    //caracteristicas de la clase
     private String id;
     private String nombre;
     private int vida;
-    private Armamento armamento; //esto es composición
+    private Armamento armamento;
     private Motor motor;
+    private Piloto piloto;
+    private final Atacar accionAtacar;
 
-    /**
-     * Constructor de un robot
-     * @param id ...
-     * @param nombre ...
-     * @param vida ...
-     * @param armamento ...
-     * @param motor ...
-     */
-    //TODO colocar descripciones
-    public Robot(String id, String nombre, int vida, Armamento armamento, Motor motor){
+    public Robot(String id, String nombre, int vida, Armamento armamento, Motor motor, Piloto piloto) {
         this.id = id;
         this.nombre = nombre;
-        this.vida = vida;
+        setVida(vida);
         this.armamento = armamento;
         this.motor = motor;
+        this.piloto = piloto;
+        this.accionAtacar = new Atacar();
     }
 
     public String getId() {
@@ -57,7 +51,7 @@ public class Robot {
     }
 
     public void setVida(int vida) {
-        this.vida = vida;
+        this.vida = Math.max(vida, 0);
     }
 
     public Armamento getArmamento() {
@@ -76,27 +70,29 @@ public class Robot {
         this.motor = motor;
     }
 
-    public String atacar(Robot enemigo){
-        int daño = this.armamento.getDaño();
-        enemigo.recibirDaño(daño);
-        return this.nombre + "ataco a" + enemigo.getNombre()
-                + " usando " + this.armamento.getNombre()
-                + " y causo " + daño
-                + " puntos de daño";
+    public Piloto getPiloto() {
+        return piloto;
+    }
+
+    public void setPiloto(Piloto piloto) {
+        this.piloto = piloto;
+    }
+
+    public String atacar(Robot enemigo) {
+        int daño = accionAtacar.ataqueBasico(enemigo, armamento);
+        return nombre + " atacó a " + enemigo.getNombre()
+                + " usando " + armamento.getNombre()
+                + " y causó " + daño + " puntos de daño.";
     }
 
     public void recibirDaño(int daño) {
-        if(daño >0){
-            this.vida = vida - daño;
-        }
-
-        if(daño < 0){
-            this.vida = 0;
+        if (daño > 0) {
+            vida = Math.max(vida - daño, 0);
         }
     }
 
-    public boolean estaDestruido(){
-        return this.vida == 0;
+    public boolean estaDestruido() {
+        return vida <= 0;
     }
 
     @Override
@@ -107,6 +103,7 @@ public class Robot {
                 ", vida=" + vida +
                 ", armamento=" + armamento +
                 ", motor=" + motor +
+                ", piloto=" + piloto +
                 '}';
     }
 }

@@ -1,13 +1,7 @@
 package com.duoc.fabricarobots.model.armamentobelico;
 
-import java.util.ArrayList;
-
 /**
  * Representa el sistema ofensivo de un robot de combate.
- *
- * Un armamento tiene un nombre, un tipo y un nivel de daño.
- * Esta clase permite separar la responsabilidad ofensiva del robot en
- * una clase independiente.
  */
 public class Armamento {
 
@@ -15,18 +9,10 @@ public class Armamento {
     private String tipo;
     private int daño;
 
-
-    /**
-     * Constructor de la clase Armamento
-     *
-     * @param nombre nombre del armamento
-     * @param tipo tipo de armamento, por ejemplo: energia, plasma o impacto
-     * @param daño cantidad de daño que puede causar
-     */
     public Armamento(String nombre, String tipo, int daño) {
         this.nombre = nombre;
         this.tipo = tipo;
-        this.daño = daño;
+        setDaño(daño);
     }
 
     public String getNombre() {
@@ -50,7 +36,7 @@ public class Armamento {
     }
 
     public void setDaño(int daño) {
-        if(daño >= 0){
+        if (daño >= 0) {
             this.daño = daño;
         }
     }
