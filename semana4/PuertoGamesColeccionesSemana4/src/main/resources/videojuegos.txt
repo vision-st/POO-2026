@@ -1,0 +1,5 @@
+Mario Kart;Carreras;45990
+Minecraft;Sandbox;26990
+Super Mario Odyssey;Aventura;49990
+FIFA 26;Deportes;42990
+The Legend of Zelda;Aventura;59990
