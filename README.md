@@ -31,6 +31,7 @@ POO/
 ## Estado actual
 
 - `semana2`: contiene el proyecto **RobotsSemana2**.
+- `semana5`: contiene proyectos de apoyo sobre organizacion de proyectos Java, lectura de Excel con Apache POI, manejo de rutas, version portable del proyecto PuertoGames y una variante Swing.
 - Las demás semanas quedan preparadas para incorporar futuros trabajos.
 
 ## Tecnologías base
