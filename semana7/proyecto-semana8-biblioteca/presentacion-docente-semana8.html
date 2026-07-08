@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presentacion docente - Semana 8 Biblioteca Hibrida</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+    .slide {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 26px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+    }
+    h1, h2, h3 {
+      color: #f8fafc;
+    }
+    h1 { margin-top: 0; font-size: 2.2rem; }
+    h2 {
+      border-bottom: 2px solid #334155;
+      padding-bottom: 10px;
+    }
+    pre {
+      background: #020617;
+      color: #cbd5e1;
+      padding: 16px;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+      font-family: Consolas, monospace;
+      white-space: pre-wrap;
+    }
+    code {
+      font-family: Consolas, monospace;
+      color: #93c5fd;
+    }
+    .pill {
+      display: inline-block;
+      background: #1d4ed8;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin: 4px 8px 4px 0;
+      font-size: 0.92rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .accent { color: #86efac; }
+    .warn { color: #fcd34d; }
+    ul li { margin-bottom: 10px; }
+    .footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #334155;
+      font-weight: bold;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <section class="slide">
+      <h1>Presentacion docente - Semana 8</h1>
+      <p><strong>Proyecto:</strong> Biblioteca Hibrida</p>
+      <p><strong>Objetivo de la clase:</strong> explicar una solucion completa que integra <code>herencia</code>, <code>polimorfismo</code>, <code>interfaces</code>, <code>colecciones genericas</code>, <code>instanceof</code> y <code>organizacion por paquetes</code>.</p>
+      <div>
+        <span class="pill">Herencia</span>
+        <span class="pill">Polimorfismo</span>
+        <span class="pill">Interfaces</span>
+        <span class="pill">Generics</span>
+        <span class="pill">instanceof</span>
+        <span class="pill">Arquitectura basica</span>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>1. Contexto del negocio</h2>
+      <p>En lugar de repetir el mismo dominio academico de siempre, el proyecto modela una <strong>biblioteca hibrida</strong> que administra materiales fisicos y digitales.</p>
+      <ul>
+        <li><strong>Materiales fisicos:</strong> se pueden prestar y devolver.</li>
+        <li><strong>Materiales digitales:</strong> se pueden descargar y reproducir como muestra.</li>
+        <li><strong>Todos</strong> comparten datos comunes: titulo, codigo y autor.</li>
+      </ul>
+      <p>Este dominio es ideal porque permite demostrar que <strong>una clase puede heredar una base comun y, ademas, implementar distintas capacidades mediante interfaces</strong>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>2. Resultados de aprendizaje que cubre</h2>
+      <ul>
+        <li>Diseñar una jerarquia de clases reutilizable.</li>
+        <li>Aplicar herencia con <code>extends</code>.</li>
+        <li>Aplicar polimorfismo con una referencia comun.</li>
+        <li>Integrar interfaces como contratos de comportamiento.</li>
+        <li>Usar colecciones genericas para almacenar objetos heterogeneos.</li>
+        <li>Validar tipos en tiempo de ejecucion con <code>instanceof</code>.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>3. Estructura interna del proyecto</h2>
+      <pre>src/
+├── model/
+│   ├── MaterialBiblioteca.java
+│   ├── Prestable.java
+│   ├── Descargable.java
+│   ├── Reproducible.java
+│   ├── LibroFisico.java
+│   ├── RevistaFisica.java
+│   ├── Ebook.java
+│   └── Audiolibro.java
+├── data/
+│   ├── Catalogo.java
+│   └── GestorBiblioteca.java
+├── util/
+│   └── Separador.java
+└── ui/
+    └── Main.java</pre>
+      <div class="grid">
+        <div class="card">
+          <h3>model</h3>
+          <p>Contiene superclase, subclases e interfaces del dominio.</p>
+        </div>
+        <div class="card">
+          <h3>data</h3>
+          <p>Contiene el catalogo generico y la clase gestora que coordina acciones.</p>
+        </div>
+        <div class="card">
+          <h3>ui</h3>
+          <p>Contiene el punto de entrada del programa.</p>
+        </div>
+        <div class="card">
+          <h3>util</h3>
+          <p>Contiene utilidades de apoyo para la salida por consola.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>4. Teoria central: herencia</h2>
+      <p>La herencia modela una relacion del tipo <strong>"es un"</strong>.</p>
+      <pre>public abstract class MaterialBiblioteca {
+    private final String titulo;
+    private final String codigo;
+    private final String autor;
+
+    public abstract void mostrarResumen();
+}</pre>
+      <p>Las subclases:</p>
+      <ul>
+        <li><code>LibroFisico</code> es un <code>MaterialBiblioteca</code></li>
+        <li><code>RevistaFisica</code> es un <code>MaterialBiblioteca</code></li>
+        <li><code>Ebook</code> es un <code>MaterialBiblioteca</code></li>
+        <li><code>Audiolibro</code> es un <code>MaterialBiblioteca</code></li>
+      </ul>
+      <p class="accent">Ganancia: atributos comunes y un metodo abstracto compartido, evitando repeticion innecesaria.</p>
+    </section>
+
+    <section class="slide">
+      <h2>5. Teoria central: interfaces</h2>
+      <p>Una interfaz no representa tanto <em>que es</em> un objeto, sino <em>que puede hacer</em>.</p>
+      <pre>public interface Prestable {
+    void prestar();
+    void devolver();
+    boolean estaPrestado();
+}</pre>
+      <pre>public interface Descargable {
+    void descargar();
+}</pre>
+      <pre>public interface Reproducible {
+    void reproducirMuestra();
+}</pre>
+      <p><strong>Lectura docente:</strong></p>
+      <ul>
+        <li><code>LibroFisico</code> y <code>RevistaFisica</code> implementan <code>Prestable</code>.</li>
+        <li><code>Ebook</code> y <code>Audiolibro</code> implementan <code>Descargable</code>.</li>
+        <li><code>Ebook</code> y <code>Audiolibro</code> tambien implementan <code>Reproducible</code>.</li>
+      </ul>
+      <p class="warn">Esto muestra por que una interfaz es mas flexible que meter todo en una unica clase base con metodos absurdos para todos.</p>
+    </section>
+
+    <section class="slide">
+      <h2>6. Relacion entre herencia e interfaces</h2>
+      <pre>LibroFisico extends MaterialBiblioteca implements Prestable
+RevistaFisica extends MaterialBiblioteca implements Prestable
+Ebook extends MaterialBiblioteca implements Descargable, Reproducible
+Audiolibro extends MaterialBiblioteca implements Descargable, Reproducible</pre>
+      <p>Aqui conviven dos ideas:</p>
+      <ul>
+        <li><strong>Herencia:</strong> todos son materiales de biblioteca.</li>
+        <li><strong>Interfaces:</strong> cada uno puede tener capacidades distintas.</li>
+      </ul>
+      <p class="accent">Ese es el punto fino: una clase puede pertenecer a una jerarquia y, ademas, asumir multiples roles.</p>
+    </section>
+
+    <section class="slide">
+      <h2>7. Diagrama de clases</h2>
+      <pre>                           +------------------------------+
+                           |   MaterialBiblioteca         |
+                           +------------------------------+
+                           | - titulo : String            |
+                           | - codigo : String            |
+                           | - autor : String             |
+                           +------------------------------+
+                           | + mostrarResumen() : void    |
+                           +--------------+---------------+
+                                          |
+                 ---------------------------------------------------------
+                 |                         |                     |         |
+                 v                         v                     v         v
+      +-------------------+   +-------------------+   +-------------------+   +-------------------+
+      |   LibroFisico     |   |  RevistaFisica    |   |       Ebook       |   |    Audiolibro     |
+      +-------------------+   +-------------------+   +-------------------+   +-------------------+
+      | - paginas:int     |   | - numeroEdicion   |   | - tamanoMb:double |   | - duracion:int    |
+      | - prestado:boolean|   | - prestada:boolean|   +-------------------+   +-------------------+
+      +-------------------+   +-------------------+   | + descargar()     |   | + descargar()     |
+      | + prestar()       |   | + prestar()       |   | + reproducir...   |   | + reproducir...   |
+      | + devolver()      |   | + devolver()      |   +-------------------+   +-------------------+
+      +---------+---------+   +---------+---------+
+                |                       |
+                +----------- implements Prestable -----------+
+
+                         Ebook implements Descargable, Reproducible
+                     Audiolibro implements Descargable, Reproducible
+
+      +-------------------+         +-----------------------+
+      |    Catalogo<T>    |         |   GestorBiblioteca    |
+      +-------------------+         +-----------------------+
+      | - elementos:List<T>|        | - catalogo: Catalogo  |
+      +-------------------+         +-----------------------+
+      | + agregar(T)      |         | + cargarDatosDemo()   |
+      | + obtenerTodos()  |         | + mostrarCatalogo()   |
+      +-------------------+         | + procesarPrestamos() |
+                                    | + procesarDescargas() |
+                                    | + reproducirMuestras()|
+                                    | + mostrarTiposReales()|
+                                    +-----------------------+</pre>
+    </section>
+
+    <section class="slide">
+      <h2>8. Teoria central: polimorfismo</h2>
+      <p>El polimorfismo aparece cuando tratamos objetos distintos usando una referencia comun.</p>
+      <pre>Catalogo&lt;MaterialBiblioteca&gt; catalogo = new Catalogo&lt;&gt;();</pre>
+      <p>Esto permite almacenar libros, revistas, ebooks y audiolibros en la misma estructura.</p>
+      <pre>for (MaterialBiblioteca material : catalogo.obtenerTodos()) {
+    material.mostrarResumen();
+}</pre>
+      <p>La llamada correcta se resuelve en tiempo de ejecucion segun el tipo real del objeto.</p>
+    </section>
+
+    <section class="slide">
+      <h2>9. Teoria central: colecciones genericas</h2>
+      <p>La clase <code>Catalogo&lt;T&gt;</code> encapsula una lista tipada y reutilizable.</p>
+      <pre>public class Catalogo&lt;T&gt; {
+    private final List&lt;T&gt; elementos;
+
+    public void agregar(T elemento) { ... }
+    public List&lt;T&gt; obtenerTodos() { ... }
+}</pre>
+      <p><strong>Valor pedagógico:</strong></p>
+      <ul>
+        <li>Introduce reutilizacion real mediante generics.</li>
+        <li>Evita acoplar el catalogo a un solo tipo concreto.</li>
+        <li>Permite escalar la solucion si mañana el negocio cambia.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>10. Teoria central: instanceof</h2>
+      <p>Se usa para validar el tipo real en tiempo de ejecucion cuando necesitamos aplicar una accion especial.</p>
+      <pre>if (material instanceof Prestable prestable) {
+    prestable.prestar();
+}</pre>
+      <pre>if (material instanceof Ebook) {
+    System.out.println(material.getTitulo() + " es un Ebook.");
+}</pre>
+      <p><strong>Interpretacion docente:</strong></p>
+      <ul>
+        <li>La interfaz me permite saber si el objeto tiene cierta capacidad.</li>
+        <li>El tipo concreto me permite afinar la logica cuando realmente lo necesito.</li>
+      </ul>
+      <p class="warn">Advertencia elegante: usar <code>instanceof</code> esta bien, pero abusar de el puede ser senal de diseno flojo.</p>
+    </section>
+
+    <section class="slide">
+      <h2>11. Flujo del sistema</h2>
+      <pre>1. Main crea un GestorBiblioteca.
+2. GestorBiblioteca carga datos demo en Catalogo&lt;MaterialBiblioteca&gt;.
+3. Main solicita mostrar catalogo.
+4. GestorBiblioteca recorre la coleccion y ejecuta mostrarResumen().
+5. Main solicita procesar prestamos, descargas y muestras.
+6. GestorBiblioteca usa instanceof para detectar capacidades:
+   - Prestable
+   - Descargable
+   - Reproducible
+7. Main solicita mostrar tipos reales.
+8. El sistema informa si cada elemento es Ebook, Audiolibro o material fisico prestable.</pre>
+    </section>
+
+    <section class="slide">
+      <h2>12. Diagrama de flujo conceptual</h2>
+      <pre>[Main]
+   |
+   v
+[GestorBiblioteca]
+   |
+   +--> cargarDatosDemo()
+   |
+   +--> mostrarCatalogo()
+   |       |
+   |       v
+   |   [Catalogo&lt;MaterialBiblioteca&gt;]
+   |       |
+   |       v
+   |   mostrarResumen() polimorfico
+   |
+   +--> procesarPrestamos()
+   |       |
+   |       v
+   |   if material instanceof Prestable
+   |       |
+   |       v
+   |   prestar()
+   |
+   +--> procesarDescargas()
+   |       |
+   |       v
+   |   if material instanceof Descargable
+   |       |
+   |       v
+   |   descargar()
+   |
+   +--> reproducirMuestras()
+   |       |
+   |       v
+   |   if material instanceof Reproducible
+   |       |
+   |       v
+   |   reproducirMuestra()
+   |
+   +--> mostrarTiposReales()</pre>
+    </section>
+
+    <section class="slide">
+      <h2>13. Relacion entre teoria y codigo</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Concepto</h3>
+          <p>Herencia</p>
+        </div>
+        <div class="card">
+          <h3>Aplicacion</h3>
+          <p><code>LibroFisico</code>, <code>RevistaFisica</code>, <code>Ebook</code> y <code>Audiolibro</code> heredan de <code>MaterialBiblioteca</code>.</p>
+        </div>
+        <div class="card">
+          <h3>Concepto</h3>
+          <p>Interfaces</p>
+        </div>
+        <div class="card">
+          <h3>Aplicacion</h3>
+          <p><code>Prestable</code>, <code>Descargable</code> y <code>Reproducible</code> representan capacidades.</p>
+        </div>
+        <div class="card">
+          <h3>Concepto</h3>
+          <p>Polimorfismo</p>
+        </div>
+        <div class="card">
+          <h3>Aplicacion</h3>
+          <p>Todos los materiales se recorren como <code>MaterialBiblioteca</code>.</p>
+        </div>
+        <div class="card">
+          <h3>Concepto</h3>
+          <p>Generics</p>
+        </div>
+        <div class="card">
+          <h3>Aplicacion</h3>
+          <p><code>Catalogo&lt;T&gt;</code> abstrae la coleccion y la hace reutilizable.</p>
+        </div>
+        <div class="card">
+          <h3>Concepto</h3>
+          <p>instanceof</p>
+        </div>
+        <div class="card">
+          <h3>Aplicacion</h3>
+          <p>Se valida si un material es prestable, descargable o reproducible.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>14. Justificacion de diseño</h2>
+      <ul>
+        <li>No todo material se presta, por eso <strong>Prestable</strong> no va en la superclase.</li>
+        <li>No todo material se descarga, por eso <strong>Descargable</strong> es una interfaz separada.</li>
+        <li>No todo material reproduce muestra, por eso <strong>Reproducible</strong> tambien se separa.</li>
+        <li>Esto evita meter metodos absurdos en una clase base comun, como un <code>descargar()</code> vacio en un libro fisico. Y menos mal.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>15. Ventajas didacticas del proyecto</h2>
+      <ul>
+        <li>El dominio es facil de entender para estudiantes.</li>
+        <li>Las interfaces representan capacidades claras del negocio.</li>
+        <li>El uso de <code>instanceof</code> tiene sentido real y no se siente forzado.</li>
+        <li>La estructura por paquetes permite enseñar orden, responsabilidad y legibilidad.</li>
+        <li>El proyecto es pequeno, pero suficientemente rico para discutir decisiones de diseño.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>16. Preguntas para trabajar con estudiantes</h2>
+      <ol>
+        <li>¿Por que <code>Ebook</code> no deberia implementar <code>Prestable</code>?</li>
+        <li>¿Que pasaria si metieramos <code>descargar()</code> dentro de <code>MaterialBiblioteca</code>?</li>
+        <li>¿En que parte aparece realmente el polimorfismo?</li>
+        <li>¿Para que se usa <code>instanceof</code> y por que no conviene abusar de el?</li>
+        <li>¿Que ganamos con <code>Catalogo&lt;T&gt;</code> en vez de usar una lista directa?</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>17. Posibles extensiones</h2>
+      <ul>
+        <li>Agregar usuarios y prestamos asociados.</li>
+        <li>Agregar reservas.</li>
+        <li>Agregar multas por retraso.</li>
+        <li>Persistir datos en archivo.</li>
+        <li>Agregar menus interactivos.</li>
+      </ul>
+      <p>Es decir: el proyecto ya sirve como base para evolucionar sin tener que botarlo y empezar de cero. Eso, casualmente, es una senal de que el diseño no quedo tan mal.</p>
+    </section>
+
+    <section class="slide">
+      <h2>18. Cierre docente</h2>
+      <p>Este proyecto demuestra una idea central de la programacion orientada a objetos:</p>
+      <pre>La herencia sirve para compartir estructura comun.
+Las interfaces sirven para modelar capacidades.
+El polimorfismo permite tratar objetos distintos de forma uniforme.
+instanceof permite validar tipos reales cuando hace falta.
+Las colecciones genericas hacen que todo eso sea util a escala.</pre>
+      <p>En otras palabras: aqui las interfaces no son adorno teorico. Son una herramienta concreta para construir software mas flexible y mas limpio.</p>
+      <div class="footer">Revisado y preparado por Balto para Jorge.</div>
+    </section>
+
+  </div>
+</body>
+</html>
